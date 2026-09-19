@@ -8,7 +8,7 @@ export default function MedlemKort({ medlem, onTrykk }) {
         <Text style={styles.status}>{medlem.status}</Text>
       </View>
       <Text style={styles.detalj}>
-        {medlem.rolle} · {medlem.post}
+        {medlem.rolle} · {medlem.omrade}
       </Text>
     </Pressable>
   );
