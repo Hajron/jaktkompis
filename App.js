@@ -15,7 +15,7 @@ function JaktlagStack() {
       <Stack.Screen
         name="Jaktlag"
         component={JaktlagScreen}
-        options={{ title: 'Jaktlaget' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Detalj"

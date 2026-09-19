@@ -1,39 +1,80 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { farger, rom, tekst, radius } from '../theme/theme';
 
 export default function MedlemKort({ medlem, onTrykk }) {
+  const erAktiv = medlem.status !== 'Pause';
+
   return (
-    <Pressable style={styles.kort} onPress={onTrykk}>
-      <View style={styles.rad}>
-        <Text style={styles.navn}>{medlem.navn}</Text>
-        <Text style={styles.status}>{medlem.status}</Text>
+    <Pressable
+      style={({ pressed }) => [styles.kort, pressed && styles.kortTrykket]}
+      onPress={onTrykk}
+    >
+      <View style={styles.venstre}>
+        <View style={[styles.prikk, !erAktiv && styles.prikkInaktiv]} />
       </View>
-      <Text style={styles.detalj}>
-        {medlem.rolle} · {medlem.omrade}
-      </Text>
+
+      <View style={styles.innhold}>
+        <Text style={styles.navn}>{medlem.navn}</Text>
+        <Text style={styles.detalj}>
+          {medlem.rolle} · {medlem.omrade}
+        </Text>
+      </View>
+
+      <View style={styles.hoyre}>
+        <Text style={styles.status}>{medlem.status}</Text>
+        <Text style={styles.tid}>{medlem.sistSett}</Text>
+      </View>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   kort: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  rad: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: rom.m,
+    paddingHorizontal: rom.m,
+    backgroundColor: farger.flate,
+    borderBottomWidth: 1,
+    borderBottomColor: farger.linje,
+  },
+  kortTrykket: {
+    backgroundColor: farger.aksentSvak,
+  },
+  venstre: {
+    marginRight: rom.m,
+  },
+  prikk: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: farger.aksent,
+  },
+  prikkInaktiv: {
+    backgroundColor: farger.linje,
+  },
+  innhold: {
+    flex: 1,
   },
   navn: {
-    fontSize: 17,
-    fontWeight: '600',
-  },
-  status: {
-    fontSize: 13,
+    ...tekst.overskrift,
+    color: farger.tekst,
   },
   detalj: {
-    fontSize: 14,
-    marginTop: 4,
+    ...tekst.smatekst,
+    color: farger.tekstSvak,
+    marginTop: 2,
+  },
+  hoyre: {
+    alignItems: 'flex-end',
+  },
+  status: {
+    ...tekst.smatekst,
+    color: farger.tekst,
+  },
+  tid: {
+    ...tekst.smatekst,
+    color: farger.tekstSvak,
+    marginTop: 2,
   },
 });
