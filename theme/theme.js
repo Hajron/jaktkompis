@@ -1,3 +1,5 @@
+// Samlet design: farger, avstander og typografi.
+
 export const farger = {
   bakgrunn: '#FAF9F6',
   flate: '#FFFFFF',

@@ -11,6 +11,8 @@ import MinStatusScreen from './screens/MinStatusScreen';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+
+// Stack = skjerm over skjerm, med tilbakeknapp.
 function JaktlagStack() {
   return (
     <Stack.Navigator>
@@ -31,6 +33,7 @@ function JaktlagStack() {
 export default function App() {
   return (
     <NavigationContainer>
+      // Navigasjon. Tabs = bunnmeny. Stacken ligger inni første fane.
       <Tab.Navigator
         screenOptions={{
           headerShown: false,

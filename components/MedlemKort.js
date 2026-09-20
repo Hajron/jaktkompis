@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { farger, rom, tekst, radius } from '../theme/theme';
 
+// Props. Komponenten mottar data og en funksjon utenfra.
 export default function MedlemKort({ medlem, onTrykk }) {
   const erAktiv = medlem.status !== 'Pause';
 
@@ -28,6 +29,7 @@ export default function MedlemKort({ medlem, onTrykk }) {
   );
 }
 
+  // Flexbox. Rad med prikk, innhold (flex: 1) og status.
 const styles = StyleSheet.create({
   kort: {
     flexDirection: 'row',

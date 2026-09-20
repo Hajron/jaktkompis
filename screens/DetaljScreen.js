@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { farger, rom, tekst, radius } from '../theme/theme';
 
+// Props. Samme prinsipp som MedlemKort.
 function InfoRad({ etikett, verdi }) {
   return (
     <View style={styles.rad}>
@@ -12,6 +13,7 @@ function InfoRad({ etikett, verdi }) {
 }
 
 export default function DetaljScreen({ route }) {
+    // Leser medlemmet som ble sendt med i navigasjonen.
   const { medlem } = route.params;
   const [kvittert, setKvittert] = useState(false);
 

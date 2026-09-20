@@ -1,3 +1,5 @@
+// Statiske data. Kan erstattes med databasetilkobling i framtiden.
+
 export const jaktlag = [
   {
     id: '1',

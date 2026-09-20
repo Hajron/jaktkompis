@@ -16,7 +16,7 @@ export default function JaktlagScreen({ navigation }) {
           {antallUte} av {jaktlag.length} er ute i terrenget
         </Text>
       </View>
-
+      {/* Liste med FlatList */}
       <FlatList
         data={jaktlag}
         keyExtractor={(item) => item.id}

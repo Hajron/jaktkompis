@@ -3,6 +3,7 @@ import { View, Text, TextInput, Pressable, ScrollView, StyleSheet } from 'react-
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { farger, rom, tekst, radius } from '../theme/theme';
 
+// State. Tre uavhengige verdier som styrer skjermen.
 const statuser = ['På post', 'I bevegelse', 'Pause'];
 
 export default function MinStatusScreen() {
@@ -23,6 +24,7 @@ export default function MinStatusScreen() {
         </Text>
       </View>
 
+      {/* State styrer stil, ikke bare tekst */}
       <View style={styles.seksjon}>
         <Text style={styles.etikett}>Status</Text>
         <View style={styles.knapperad}>
