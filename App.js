@@ -33,7 +33,7 @@ function JaktlagStack() {
 export default function App() {
   return (
     <NavigationContainer>
-      // Navigasjon. Tabs = bunnmeny. Stacken ligger inni første fane.
+      {/* Navigasjon. Tabs = bunnmeny. Stacken ligger inni første fane. */}
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
