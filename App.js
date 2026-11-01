@@ -12,6 +12,7 @@ import JaktlagScreen from './screens/JaktlagScreen';
 import DetaljScreen from './screens/DetaljScreen';
 import MinStatusScreen from './screens/MinStatusScreen';
 import LoggInnScreen from './screens/LoggInnScreen';
+import NyttMedlemScreen from './screens/NyttMedlemScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,6 +31,11 @@ function JaktlagStack() {
         name="Detalj"
         component={DetaljScreen}
         options={{ title: 'Detaljer' }}
+      />
+      <Stack.Screen
+        name="NyttMedlem"
+        component={NyttMedlemScreen}
+        options={{ title: 'Nytt medlem' }}
       />
     </Stack.Navigator>
   );

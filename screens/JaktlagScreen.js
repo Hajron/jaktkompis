@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import {
-  View, Text, FlatList, StyleSheet,
+  View, Text, FlatList, StyleSheet, Pressable,
   ActivityIndicator, RefreshControl,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { supabase } from '../lib/supabase';
 import MedlemKort from '../components/MedlemKort';
-import { farger, rom, tekst } from '../theme/theme';
+import { farger, rom, tekst, radius } from '../theme/theme';
 
 // Databasen bruker snake_case, appen bruker camelCase.
 function tilAppFormat(rad) {
@@ -51,6 +52,12 @@ export default function JaktlagScreen({ navigation }) {
     hentMedlemmer();
   }, []);
 
+  // Henter pa nytt nar man kommer tilbake fra skjemaet
+  useEffect(() => {
+    const avslutt = navigation.addListener('focus', hentMedlemmer);
+    return avslutt;
+  }, [navigation]);
+
   async function oppdater() {
     setOppdaterer(true);
     await hentMedlemmer();
@@ -70,10 +77,19 @@ export default function JaktlagScreen({ navigation }) {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
-        <Text style={styles.tittel}>Jaktlaget</Text>
-        <Text style={styles.undertittel}>
-          {antallUte} av {medlemmer.length} er ute i terrenget
-        </Text>
+        <View style={styles.headerTekst}>
+          <Text style={styles.tittel}>Jaktlaget</Text>
+          <Text style={styles.undertittel}>
+            {antallUte} av {medlemmer.length} er ute i terrenget
+          </Text>
+        </View>
+
+        <Pressable
+          style={({ pressed }) => [styles.leggTil, pressed && styles.leggTilTrykket]}
+          onPress={() => navigation.navigate('NyttMedlem')}
+        >
+          <Ionicons name="add" size={24} color={farger.flate} />
+        </Pressable>
       </View>
 
       {feil ? (
@@ -116,9 +132,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: rom.m,
     paddingTop: rom.l,
     paddingBottom: rom.m,
+  },
+  headerTekst: {
+    flex: 1,
   },
   tittel: {
     ...tekst.tittel,
@@ -129,12 +151,23 @@ const styles = StyleSheet.create({
     color: farger.tekstSvak,
     marginTop: rom.xs,
   },
+  leggTil: {
+    width: 44,
+    height: 44,
+    borderRadius: radius.m,
+    backgroundColor: farger.aksent,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  leggTilTrykket: {
+    opacity: 0.7,
+  },
   feilBoks: {
     marginHorizontal: rom.m,
     marginBottom: rom.s,
     padding: rom.m,
     backgroundColor: '#F8E8E0',
-    borderRadius: 4,
+    borderRadius: radius.s,
   },
   feilTekst: {
     ...tekst.smatekst,
