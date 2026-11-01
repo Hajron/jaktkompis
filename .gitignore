@@ -43,3 +43,4 @@ yarn-error.*
 
 # Supabase-nokler
 .env
+.vscode/
