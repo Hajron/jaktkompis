@@ -1,12 +1,17 @@
+import { useEffect, useState } from 'react';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { farger } from './theme/theme';
 import { Ionicons } from '@expo/vector-icons';
+
+import { supabase } from './lib/supabase';
+import { farger } from './theme/theme';
 
 import JaktlagScreen from './screens/JaktlagScreen';
 import DetaljScreen from './screens/DetaljScreen';
 import MinStatusScreen from './screens/MinStatusScreen';
+import LoggInnScreen from './screens/LoggInnScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,6 +36,37 @@ function JaktlagStack() {
 }
 
 export default function App() {
+  const [session, setSession] = useState(null);
+  const [laster, setLaster] = useState(true);
+
+  // KRAV: autentisering. Henter lagret okt og lytter pa endringer.
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLaster(false);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, nySession) => {
+      setSession(nySession);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (laster) {
+    return (
+      <View style={styles.laster}>
+        <ActivityIndicator size="large" color={farger.aksent} />
+      </View>
+    );
+  }
+
+  if (!session) {
+    return <LoggInnScreen />;
+  }
+
   return (
     <NavigationContainer>
       {/* Navigasjon. Tabs = bunnmeny. Stacken ligger inni første fane. */}
@@ -74,3 +110,12 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  laster: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: farger.bakgrunn,
+  },
+});
