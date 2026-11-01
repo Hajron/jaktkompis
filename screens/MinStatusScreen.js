@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, TextInput, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { supabase } from '../lib/supabase';
 import { farger, rom, tekst, radius } from '../theme/theme';
 
 // State. Tre uavhengige verdier som styrer skjermen.
@@ -11,6 +12,18 @@ export default function MinStatusScreen() {
   const [status, setStatus] = useState('På post');
   const [omrade, setOmrade] = useState('');
   const [notat, setNotat] = useState('');
+  const [epost, setEpost] = useState('');
+
+  // Henter den innloggede brukeren nar skjermen apnes
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setEpost(user?.email ?? '');
+    });
+  }, []);
+
+  async function loggUt() {
+    await supabase.auth.signOut();
+  }
 
   return (
     <ScrollView
@@ -74,6 +87,18 @@ export default function MinStatusScreen() {
           {omrade ? ` · ${omrade}` : ''}
         </Text>
         {notat ? <Text style={styles.notatTekst}>«{notat}»</Text> : null}
+      </View>
+
+      <View style={styles.kontoSeksjon}>
+        <Text style={styles.etikett}>Konto</Text>
+        {epost ? <Text style={styles.epost}>{epost}</Text> : null}
+
+        <Pressable
+          style={({ pressed }) => [styles.loggUt, pressed && styles.loggUtTrykket]}
+          onPress={loggUt}
+        >
+          <Text style={styles.loggUtTekst}>Logg ut</Text>
+        </Pressable>
       </View>
     </ScrollView>
   );
@@ -144,7 +169,7 @@ const styles = StyleSheet.create({
   },
   oppsummering: {
     marginHorizontal: rom.m,
-    marginBottom: rom.xl,
+    marginBottom: rom.l,
     padding: rom.m,
     backgroundColor: farger.aksentSvak,
     borderRadius: radius.m,
@@ -164,5 +189,35 @@ const styles = StyleSheet.create({
     ...tekst.brodtekst,
     color: farger.tekst,
     marginTop: rom.s,
+  },
+  kontoSeksjon: {
+    paddingHorizontal: rom.m,
+    paddingTop: rom.m,
+    marginBottom: rom.xl,
+    borderTopWidth: 1,
+    borderTopColor: farger.linje,
+    marginHorizontal: rom.m,
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
+  epost: {
+    ...tekst.brodtekst,
+    color: farger.tekst,
+    marginBottom: rom.m,
+  },
+  loggUt: {
+    paddingVertical: rom.m,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: farger.varsel,
+    borderRadius: radius.m,
+  },
+  loggUtTrykket: {
+    opacity: 0.7,
+  },
+  loggUtTekst: {
+    ...tekst.brodtekst,
+    fontWeight: '600',
+    color: farger.varsel,
   },
 });
